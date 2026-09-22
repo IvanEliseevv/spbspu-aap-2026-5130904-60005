@@ -2,5 +2,5 @@
 
 int main()
 {
-    std::cout << "isaev.islam\n";
+  std::cout << "isaev.islam\n";
 }
