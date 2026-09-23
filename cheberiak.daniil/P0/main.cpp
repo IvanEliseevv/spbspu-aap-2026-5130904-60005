@@ -1,7 +1,6 @@
 #include <iostream>
-using namespace std;
 
 int main()
 {
-    cout << "cheberiak.daniil\n";
+  std::cout << "cheberiak.daniil\n";
 }
