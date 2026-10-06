@@ -19,15 +19,16 @@ int main()
   const long long smallch = -9223372036854775807LL - 1;
   const long long suk2 = 2;
   const int suk = 1;
+  const int fail_code = 2;
 
   long long max1 = smallch;
   long long max2 = smallch;
   long long count = 0;
 
   long long prev = 0;
-  bool hasPrev = false;
-  long long curLen = 0;
-  long long bestLen = 0;
+  bool has_prev = false;
+  long long cur_len = 0;
+  long long best_len = 0;
 
   while (true)
   {
@@ -42,6 +43,7 @@ int main()
       break;
     }
     ++count;
+
     if (a > max1)
     {
       max2 = max1;
@@ -52,29 +54,29 @@ int main()
       max2 = a;
     }
 
-    if (!hasPrev)
+    if (!has_prev)
     {
-      curLen = 1;
-      hasPrev = true;
+      cur_len = 1;
+      has_prev = true;
     }
     else if (a >= prev)
     {
-      ++curLen;
+      ++cur_len;
     }
     else
     {
-      curLen = 1;
+      cur_len = 1;
     }
     prev = a;
-    if (curLen > bestLen)
+    if (cur_len > best_len)
     {
-      bestLen = curLen;
+      best_len = cur_len;
     }
   }
 
-  const bool good = (count >= suk2 && max2 != smallch);
+  const bool sub_max_ok = (count >= suk2 && max2 != smallch);
 
-  if (good)
+  if (sub_max_ok)
   {
     std::cout << max2 << "\n";
   }
@@ -83,7 +85,7 @@ int main()
     std::cerr << "ERROR: small posledovatelnost\n";
   }
 
-  std::cout << bestLen << "\n";
+  std::cout << best_len << "\n";
 
-  return good ? 0 : 2;
+  return sub_max_ok ? 0 : fail_code;
 }
