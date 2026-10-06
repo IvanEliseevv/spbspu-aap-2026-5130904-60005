@@ -19,8 +19,8 @@ int main()
   long long max1 = smallch;
   long long max2 = smallch;
   long long count = 0;
-  int suk = 2;
-  int suk2 = 1;
+  const int suk = 2;
+  const int suk2 = 1;
   while (true)
   {
     long long a = 0;
