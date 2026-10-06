@@ -19,13 +19,15 @@ int main()
   long long max1 = smallch;
   long long max2 = smallch;
   long long count = 0;
+  int suk = 2;
+  int suk2 = 1;
   while (true)
   {
     long long a = 0;
     if (dibil(a) != 0)
     {
       std::cerr << "enter a chislo \n";
-      return 1;
+      return suk2;
     }
     if (a == 0)
     {
@@ -43,10 +45,10 @@ int main()
     }
   }
 
-  if (count < 2 || max2 == smallch)
+  if (count < suk || max2 == smallch)
   {
     std::cerr << "ERROR: small posledovatelnost\n";
-    return 2;
+    return suk;
   }
   std::cout << max2 << "\n";
   return 0;
