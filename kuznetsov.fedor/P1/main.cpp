@@ -70,9 +70,9 @@ int main()
 
   if (k_el <= 2)
   {
-      std::cout<<"невозможно вычислить sub_dup\n";
-      std::cout << "SUB_MAX == " << sub_max << "\n";
-      return 2;
+    std::cout << "невозможно вычислить sub_dup\n";
+    std::cout << "SUB_MAX == " << sub_max << "\n";
+    return 2;
   }
   std::cout << "SUB_MAX == " << sub_max << "\n";
   std::cout << "sub_dup == " << sub_dup;
