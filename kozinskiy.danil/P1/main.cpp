@@ -9,7 +9,7 @@ namespace kozinskiy
   {
     if (left == middle)
     {
-      if (eq_run_len == std::numeric_limits< unsigned long long int >::max())
+      if (eq_run_len == std::numeric_limits<unsigned long long int>::max())
       {
         std::cerr << "Error: Overflow\n";
         return 2;
@@ -32,7 +32,7 @@ namespace kozinskiy
   {
     if (left < middle && middle > right)
     {
-      if (loc_max_count == std::numeric_limits< unsigned long long int >::max())
+      if (loc_max_count == std::numeric_limits<unsigned long long int>::max())
       {
         std::cerr << "Error: Overflow\n";
         return 2;
@@ -79,7 +79,8 @@ int main()
     long long int right = -1;
     while (std::cin >> right)
     {
-      int eql_res = kozinskiy::EQL_SEQ(left, middle, eq_run_len, max_eq_run_len);
+      int eql_res =
+          kozinskiy::EQL_SEQ(left, middle, eq_run_len, max_eq_run_len);
       if (eql_res != ok)
       {
         return eql_res;
