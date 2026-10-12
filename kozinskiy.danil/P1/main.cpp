@@ -1,96 +1,59 @@
+#include <cstddef>
 #include <iostream>
 #include <limits>
-
-namespace kozinskiy
-{
-  int eqlSeq(
-      long long int left,
-      long long int middle,
-      unsigned long long int& eq_run_len,
-      unsigned long long int& max_eq_run_len)
-  {
-    if (left == middle)
-    {
-      if (eq_run_len ==
-          std::numeric_limits<unsigned long long int>::max())
-      {
-        std::cerr << "Error: Overflow\n";
-        return 2;
-      }
-      eq_run_len++;
-    }
-    else
-    {
-      if (max_eq_run_len < eq_run_len)
-      {
-        max_eq_run_len = eq_run_len;
-      }
-      eq_run_len = 1;
-    }
-    return 0;
-  }
-
-  int locMax(
-      long long int left,
-      long long int middle,
-      long long int right,
-      unsigned long long int& loc_max_count)
-  {
-    if (left < middle && middle > right)
-    {
-      if (loc_max_count ==
-          std::numeric_limits<unsigned long long int>::max())
-      {
-        std::cerr << "Error: Overflow\n";
-        return 2;
-      }
-      loc_max_count++;
-    }
-    return 0;
-  }
-}
 
 int main()
 {
   const int ok = 0;
 
-  long long int left = -1;
+  int left = 0;
 
   if (!(std::cin >> left))
   {
-    std::cerr << "Error: Incorrect data\n";
+    std::cerr << "Error: Incorrect data" << '\n';
     return 1;
   }
 
   if (left == 0)
   {
     std::cout << "[EQL-SEQ] = " << 0 << '\n';
-    std::cerr << "Error: sequence is too short to [LOC-MAX]\n";
+    std::cerr << "Error: sequence is too short" << '\n';
     return 2;
   }
 
-  long long int middle = -1;
+  int middle = 0;
 
   if (!(std::cin >> middle))
   {
-    std::cerr << "Error: Incorrect data\n";
+    std::cerr << "Error: Incorrect data" << '\n';
     return 1;
   }
 
-  unsigned long long int loc_max_count = 0;
-  unsigned long long int eq_run_len = 1;
-  unsigned long long int max_eq_run_len = 1;
+  size_t locmaxcount = 0;
+  size_t eqrunlen = 1;
+  size_t maxeqrunlen = 1;
 
   if (middle != 0)
   {
-    long long int right = -1;
+    int right = 0;
     while (std::cin >> right)
     {
-      const int eql_res =
-          kozinskiy::eqlSeq(left, middle, eq_run_len, max_eq_run_len);
-      if (eql_res != ok)
+      if (left == middle)
       {
-        return eql_res;
+        if (eqrunlen == std::numeric_limits<size_t>::max())
+        {
+          std::cerr << "Error: Overflow\n";
+          return 2;
+        }
+        eqrunlen++;
+      }
+      else
+      {
+        if (maxeqrunlen < eqrunlen)
+        {
+          maxeqrunlen = eqrunlen;
+        }
+        eqrunlen = 1;
       }
 
       if (right == 0)
@@ -98,11 +61,14 @@ int main()
         break;
       }
 
-      const int loc_res =
-          kozinskiy::locMax(left, middle, right, loc_max_count);
-      if (loc_res != ok)
+      if (left < middle && middle > right)
       {
-        return loc_res;
+        if (locmaxcount == std::numeric_limits<size_t>::max())
+        {
+          std::cerr << "Error: Overflow" << '\n';
+          return 2;
+        }
+        locmaxcount++;
       }
 
       left = middle;
@@ -111,17 +77,17 @@ int main()
 
     if (std::cin.fail())
     {
-      std::cerr << "Error: Incorrect data\n";
+      std::cerr << "Error: Incorrect data" << '\n';
       return 1;
     }
   }
 
-  if (max_eq_run_len < eq_run_len)
+  if (maxeqrunlen < eqrunlen)
   {
-    max_eq_run_len = eq_run_len;
+    maxeqrunlen = eqrunlen;
   }
 
-  std::cout << "[EQL-SEQ] = " << max_eq_run_len << '\n';
-  std::cout << "[LOC-MAX] = " << loc_max_count << '\n';
+  std::cout << "[EQL-SEQ] = " << maxeqrunlen << '\n';
+  std::cout << "[LOC-MAX] = " << locmaxcount << '\n';
   return 0;
 }
