@@ -18,12 +18,12 @@ int main()
       return 1;
     }
 
-    k_el++;
     if (n == 0)
     {
       break;
     }
 
+    k_el++;
     i = n;
     if (k_el == 1)
     {
@@ -70,14 +70,15 @@ int main()
 
   if (k_el <= 2)
   {
-    std::cout << "невозможно вычислить sub_dup\n" << "SUB_MAX == " << "\n";
-    return 2;
-    if (k_el < 2)
+    if (k_el == 1)
+
     {
       std::cout << "невозможно вычислить sub_dup\n";
       std::cout << "невозможно вычислить sub_max\n";
       return 2;
     }
+    std::cout << "невозможно вычислить sub_dup\n" << "SUB_MAX == " << sub_max;
+    return 2;
   }
   std::cout << "SUB_MAX == " << sub_max << "\n";
   std::cout << "sub_dup == " << sub_dup;
