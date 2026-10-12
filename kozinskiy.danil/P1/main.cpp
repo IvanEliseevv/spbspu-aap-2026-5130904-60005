@@ -3,14 +3,14 @@
 
 namespace kozinskiy
 {
-  int eqlSeq(long long int left, long long int middle,
-             unsigned long long int& eq_run_len,
-             unsigned long long int& max_eq_run_len)
+  int eqlSeq(
+      long long int left, long long int middle,
+      unsigned long long int& eq_run_len,
+      unsigned long long int& max_eq_run_len)
   {
     if (left == middle)
     {
-      if (eq_run_len ==
-          std::numeric_limits<unsigned long long int>::max())
+      if (eq_run_len == std::numeric_limits<unsigned long long int>::max())
       {
         std::cerr << "Error: Overflow\n";
         return 2;
@@ -28,13 +28,13 @@ namespace kozinskiy
     return 0;
   }
 
-  int locMax(long long int left, long long int middle, long long int right,
-             unsigned long long int& loc_max_count)
+  int locMax(
+      long long int left, long long int middle, long long int right,
+      unsigned long long int& loc_max_count)
   {
     if (left < middle && middle > right)
     {
-      if (loc_max_count ==
-          std::numeric_limits<unsigned long long int>::max())
+      if (loc_max_count == std::numeric_limits<unsigned long long int>::max())
       {
         std::cerr << "Error: Overflow\n";
         return 2;
@@ -81,8 +81,7 @@ int main()
     long long int right = -1;
     while (std::cin >> right)
     {
-      const int eql_res =
-          kozinskiy::eqlSeq(left, middle, eq_run_len, max_eq_run_len);
+      const int eql_res = kozinskiy::eqlSeq(left, middle, eq_run_len, max_eq_run_len);
       if (eql_res != ok)
       {
         return eql_res;
@@ -93,8 +92,7 @@ int main()
         break;
       }
 
-      const int loc_res =
-          kozinskiy::locMax(left, middle, right, loc_max_count);
+      const int loc_res = kozinskiy::locMax(left, middle, right, loc_max_count);
       if (loc_res != ok)
       {
         return loc_res;
