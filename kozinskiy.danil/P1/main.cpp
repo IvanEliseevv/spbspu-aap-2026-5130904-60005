@@ -4,20 +4,18 @@
 
 int main()
 {
-  const int ok = 0;
-
   int left = 0;
 
   if (!(std::cin >> left))
   {
-    std::cerr << "Error: Incorrect data" << '\n';
+    std::cerr << "Error: Incorrect data\n";
     return 1;
   }
 
   if (left == 0)
   {
     std::cout << "[EQL-SEQ] = " << 0 << '\n';
-    std::cerr << "Error: sequence is too short" << '\n';
+    std::cerr << "Error: sequence is too short to [LOC-MAX]\n";
     return 2;
   }
 
@@ -25,7 +23,7 @@ int main()
 
   if (!(std::cin >> middle))
   {
-    std::cerr << "Error: Incorrect data" << '\n';
+    std::cerr << "Error: Incorrect data\n";
     return 1;
   }
 
@@ -65,7 +63,7 @@ int main()
       {
         if (locmaxcount == std::numeric_limits<size_t>::max())
         {
-          std::cerr << "Error: Overflow" << '\n';
+          std::cerr << "Error: Overflow\n";
           return 2;
         }
         locmaxcount++;
@@ -77,7 +75,7 @@ int main()
 
     if (std::cin.fail())
     {
-      std::cerr << "Error: Incorrect data" << '\n';
+      std::cerr << "Error: Incorrect data\n";
       return 1;
     }
   }
