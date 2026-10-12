@@ -1,61 +1,79 @@
 #include <iostream>
 
-namespace tanriverdi {
+namespace tanriverdi
+{
+    struct Result
+    {
+        int inc_seq;
+        int mon_inc;
+    };
 
-    int run(std::istream& in, std::ostream& out, std::ostream& err) {
+    bool readSequence(std::istream & in, Result & res)
+    {
+        res.inc_seq = 0;
+        res.mon_inc = 0;
+
         int previous = 0;
         int current = 0;
+        int length = 0;
+        bool first = true;
+        bool terminated = false;
 
-        in >> previous;
-
-        if (!in) {
-            err << "Ошибка ввода последовательности\n";
-            return 1;
-        }
-
-        if (previous == 0) {
-            out << 0 << '\n';
-            out << 0 << '\n';
-            return 0;
-        }
-
-        int current_mon_inc = 1;
-        int max_mon_inc = 1;
-        int inc_seq_count = 0;
-
-        while (true) {
-            in >> current;
-
-            if (!in) {
-                err << "Ошибка ввода последовательности\n";
-                return 1;
-            }
-
-            if (current == 0) {
+        while (in >> current)
+        {
+            if (current == 0)
+            {
+                terminated = true;
                 break;
             }
 
-            if (current >= previous) {
-                ++current_mon_inc;
+            if (first)
+            {
+                length = 1;
+                res.mon_inc = 1;
+                first = false;
             }
-            else {
-                current_mon_inc = 1;
-            }
+            else
+            {
+                if (current > previous)
+                {
+                    ++res.inc_seq;
+                }
 
-            if (current_mon_inc > max_mon_inc) {
-                max_mon_inc = current_mon_inc;
-            }
+                if (current >= previous)
+                {
+                    ++length;
+                }
+                else
+                {
+                    length = 1;
+                }
 
-            if (current > previous) {
-                ++inc_seq_count;
+                if (length > res.mon_inc)
+                {
+                    res.mon_inc = length;
+                }
             }
 
             previous = current;
         }
 
-        out << max_mon_inc << '\n';
-        out << inc_seq_count << '\n';
-
-        return 0;
+        return terminated;
     }
+}
+
+int main()
+{
+    tanriverdi::Result res;
+
+    if (!tanriverdi::readSequence(std::cin, res))
+    {
+        std::cerr << "Error: input is not a valid sequence\n";
+        return 1;
+    }
+
+    std::cout << res.inc_seq << '\n';
+    std::cout << res.mon_inc << '\n';
+
+    return 0;
 }
