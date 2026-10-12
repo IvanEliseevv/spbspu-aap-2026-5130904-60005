@@ -3,7 +3,9 @@
 
 namespace kozinskiy
 {
-  int EQL_SEQ(long long int left, long long int middle, unsigned long long int& eq_run_len, unsigned long long int& max_eq_run_len)
+  int EQL_SEQ(long long int left, long long int middle,
+              unsigned long long int& eq_run_len,
+              unsigned long long int& max_eq_run_len)
   {
     if (left == middle)
     {
@@ -25,7 +27,8 @@ namespace kozinskiy
     return 0;
   }
 
-  int LOC_MAX(long long int left, long long int middle, long long int right, unsigned long long int& loc_max_count)
+  int LOC_MAX(long long int left, long long int middle, long long int right,
+              unsigned long long int& loc_max_count)
   {
     if (left < middle && middle > right)
     {
@@ -60,7 +63,7 @@ int main()
   }
 
   long long int middle = -1;
-  
+
   if (!(std::cin >> middle))
   {
     std::cerr << "Error: Incorrect data\n";
@@ -70,7 +73,7 @@ int main()
   unsigned long long int loc_max_count = 0;
   unsigned long long int eq_run_len = 1;
   unsigned long long int max_eq_run_len = 1;
-  
+
   if (middle != 0)
   {
     long long int right = -1;
@@ -96,16 +99,19 @@ int main()
       left = middle;
       middle = right;
     }
+
     if (std::cin.fail())
     {
       std::cerr << "Error: Incorrect data\n";
       return 1;
     }
   }
+
   if (max_eq_run_len < eq_run_len)
   {
     max_eq_run_len = eq_run_len;
   }
+
   std::cout << "[EQL-SEQ] = " << max_eq_run_len << '\n';
   std::cout << "[LOC-MAX] = " << loc_max_count << '\n';
   return 0;
