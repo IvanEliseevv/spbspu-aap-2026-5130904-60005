@@ -4,7 +4,7 @@
 
 int main()
 {
-  const size_t maxsize = std::numeric_limits< size_t >::max();
+  const size_t maxsize = std::numeric_limits<size_t>::max();
   int left = 0;
   if (!(std::cin >> left))
   {
