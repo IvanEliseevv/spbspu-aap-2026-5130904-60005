@@ -3,13 +3,13 @@
 
 int main()
 {
-  const int cin_err = 1, unreal_par = 2; 
+  const int cin_err = 1, unreal_par = 2;
   int n = std::numeric_limits< int >::min();
   int sub_max = 0, sub_dup = 0;
   int k_max = 0, first_num = 0, second_num = std::numeric_limits< int >::min(), actual_num = 0, k_el = 0;
   int max = std::numeric_limits< int >::min();
   std::cout << "ввести значения: ";
-  while (std::cin>>n)
+  while (std::cin >> n)
   {
     if (!std::cin)
     {
@@ -28,20 +28,19 @@ int main()
     {
       first_num = n;
     }
-    else  if (k_el == 2)
+    else if (k_el == 2)
     {
       second_num = n;
     }
 
     if (k_el > 2)
-    { 
+    {
       if (first_num + second_num == actual_num)
       {
         sub_dup++;
       }
       first_num = second_num;
       second_num = n;
-
     }
 
     if (n == max)
@@ -63,7 +62,6 @@ int main()
     {
       sub_max = max;
     }
-
   }
 
   if (k_el <= 2)
@@ -76,7 +74,7 @@ int main()
       return unreal_par;
     }
     std::cerr << "невозможно вычислить sub_dup\n";
-    std::cout <<  "SUB_MAX == " << sub_max << "\n";
+    std::cout << "SUB_MAX == " << sub_max << "\n";
     return unreal_par;
   }
   std::cout << "SUB_MAX == " << sub_max << "\n";
