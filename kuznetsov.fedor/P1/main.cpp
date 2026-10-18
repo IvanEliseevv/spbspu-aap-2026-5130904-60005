@@ -3,19 +3,18 @@
 
 int main()
 {
+  const int cin_err = 1, unreal_par = 2; 
   int n = std::numeric_limits< int >::min();
   int sub_max = 0, sub_dup = 0;
-  int k_max = 0, i_1 = 0, i_2 = std::numeric_limits< int >::min(), i = 0, k_el = 0;
+  int k_max = 0, first_num = 0, second_num = std::numeric_limits< int >::min(), actual_num = 0, k_el = 0;
   int max = std::numeric_limits< int >::min();
   std::cout << "ввести значения: ";
-  while (true)
+  while (std::cin>>n)
   {
-    std::cin >> n;
-
-    if (!std::cin || n > std::numeric_limits< int >::max())
+    if (!std::cin)
     {
       std::cout << "Некорректный ввод\n";
-      return 1;
+      return cin_err;
     }
 
     if (n == 0)
@@ -24,27 +23,25 @@ int main()
     }
 
     k_el++;
-    i = n;
+    actual_num = n;
     if (k_el == 1)
     {
-      i_1 = n;
+      first_num = n;
     }
-    if (k_el == 2)
+    else  if (k_el == 2)
     {
-      i_2 = n;
+      second_num = n;
     }
 
     if (k_el > 2)
-    {
-      if (i_1 + i_2 == i)
+    { 
+      if (first_num + second_num == actual_num)
       {
         sub_dup++;
       }
-    }
+      first_num = second_num;
+      second_num = n;
 
-    if (i_1 + i_2 == i)
-    {
-      ++sub_dup;
     }
 
     if (n == max)
@@ -66,21 +63,23 @@ int main()
     {
       sub_max = max;
     }
+
   }
 
   if (k_el <= 2)
   {
-    if (k_el == 1)
+    if (k_el == 1 || k_el == 0)
 
     {
-      std::cout << "невозможно вычислить sub_dup\n";
-      std::cout << "невозможно вычислить sub_max\n";
-      return 2;
+      std::cerr << "невозможно вычислить sub_dup\n";
+      std::cerr << "невозможно вычислить sub_max\n";
+      return unreal_par;
     }
-    std::cout << "невозможно вычислить sub_dup\n" << "SUB_MAX == " << sub_max;
-    return 2;
+    std::cerr << "невозможно вычислить sub_dup\n";
+    std::cout <<  "SUB_MAX == " << sub_max << "\n";
+    return unreal_par;
   }
   std::cout << "SUB_MAX == " << sub_max << "\n";
-  std::cout << "sub_dup == " << sub_dup;
+  std::cout << "SUB_DUP == " << sub_dup << "\n";
   return 0;
 }
