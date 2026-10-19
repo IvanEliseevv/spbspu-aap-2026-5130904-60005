@@ -83,9 +83,10 @@ int main()
   else
   {
     std::cerr << "ERROR: small posledovatelnost\n";
+    return fail_code;
   }
 
   std::cout << best_len << "\n";
 
-  return sub_max_ok ? 0 : fail_code;
+  return  0;
 }
