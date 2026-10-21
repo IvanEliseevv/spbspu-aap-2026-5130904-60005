@@ -1,7 +1,7 @@
 #include <iostream>
 
 namespace eliseev {
-  int dibil(long long &a)
+  int proverka(long long &a)
   {
     if (!(std::cin >> a)) {
       return 1;
@@ -12,11 +12,9 @@ namespace eliseev {
 int main()
 {
   using namespace eliseev;
-
-  const long long smallch = -9223372036854775807LL - 1;
-  const long long suk2 = 2;
-  const int suk = 1;
-  const int fail_code = 2;
+  const long long smallch = std::numeric_limits< long long >::min();
+  const int fail_code1 = 1;
+  const int fail_code2 = 2;
 
   long long max1 = smallch;
   long long max2 = smallch;
@@ -29,9 +27,9 @@ int main()
 
   while (true) {
     long long a = 0;
-    if (dibil(a) != 0) {
+    if (proverka(a) != 0) {
       std::cerr << "enter a chislo \n";
-      return suk;
+      return fail_code1;
     }
     if (a == 0) {
       break;
@@ -59,13 +57,13 @@ int main()
     }
   }
 
-  const bool sub_max_ok = (count >= suk2 && max2 != smallch);
+  const bool sub_max_ok = (count >= fail_code2 && max2 != smallch);
 
   if (sub_max_ok) {
     std::cout << max2 << "\n";
   } else {
     std::cerr << "ERROR: small posledovatelnost\n";
-    return fail_code;
+    return fail_code2;
   }
 
   std::cout << best_len << "\n";
