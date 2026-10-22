@@ -1,17 +1,8 @@
 #include <iostream>
+#include <limits>
 
-namespace eliseev {
-  int proverka(long long &a)
-  {
-    if (!(std::cin >> a)) {
-      return 1;
-    }
-    return 0;
-  }
-}
 int main()
 {
-  using namespace eliseev;
   const long long smallch = std::numeric_limits< long long >::min();
   const int fail_code1 = 1;
   const int fail_code2 = 2;
@@ -19,54 +10,35 @@ int main()
   long long max1 = smallch;
   long long max2 = smallch;
   long long count = 0;
+  long long count_max = 0;
 
-  long long prev = 0;
-  bool has_prev = false;
-  long long cur_len = 0;
-  long long best_len = 0;
-
-  while (true) {
-    long long a = 0;
-    if (proverka(a) != 0) {
-      std::cerr << "enter a chislo \n";
-      return fail_code1;
-    }
-    if (a == 0) {
-      break;
-    }
+  long long a = 0;
+  while (std::cin >> a && a != 0) {
     ++count;
 
     if (a > max1) {
       max2 = max1;
       max1 = a;
-    } else if (a > max2 && a != max1) {
+      count_max = 1;
+    } else if (a == max1) {
+      ++count_max;
+    } else if (a > max2) {
       max2 = a;
-    }
-
-    if (!has_prev) {
-      cur_len = 1;
-      has_prev = true;
-    } else if (a >= prev) {
-      ++cur_len;
-    } else {
-      cur_len = 1;
-    }
-    prev = a;
-    if (cur_len > best_len) {
-      best_len = cur_len;
     }
   }
 
-  const bool sub_max_ok = (count >= fail_code2 && max2 != smallch);
+  if (!std::cin) {
+    std::cerr << "ERROR: invalid input\n";
+    return fail_code1;
+  }
 
-  if (sub_max_ok) {
-    std::cout << max2 << "\n";
-  } else {
+  if (count < 2 || max2 == smallch) {
     std::cerr << "ERROR: small posledovatelnost\n";
     return fail_code2;
   }
 
-  std::cout << best_len << "\n";
+  std::cout << max2 << "\n";
+  std::cout << count_max << "\n";
 
   return 0;
 }
