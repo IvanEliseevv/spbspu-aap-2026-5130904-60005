@@ -9,30 +9,30 @@ namespace kozinskiy
         const int invalid_program_argument_ec = 1;
         const int invalid_sequence_ec = 2;
         const int good_ec = 0;
-        
+
         const size_t maxsize = std::numeric_limits<size_t>::max();
         int left = 0;
-        
+
         if (!(std::cin >> left))
         {
             std::cerr << "Error: Incorrect data\n";
             return invalid_program_argument_ec;
         }
-        
+
         if (left == 0)
         {
             std::cout << "[EQL-SEQ] = " << 0 << '\n';
             std::cerr << "Error: sequence is too short to [LOC-MAX]\n";
             return invalid_sequence_ec;
         }
-        
+
         int middle = 0;
         if (!(std::cin >> middle))
         {
             std::cerr << "Error: Incorrect data\n";
             return invalid_program_argument_ec;
         }
-        
+
         size_t locmaxcount = 0;
         size_t eqrunlen = 1;
         size_t maxeqrunlen = 1;
@@ -64,12 +64,12 @@ namespace kozinskiy
                     }
                     eqrunlen = 1;
                 }
-                
+
                 if (right == 0)
                 {
                     break;
                 }
-                
+
                 if (left < middle && middle > right)
                 {
                     if (locmaxcount == maxsize)
@@ -81,18 +81,18 @@ namespace kozinskiy
                         locmaxcount++;
                     }
                 }
-                
+
                 left = middle;
                 middle = right;
             }
         }
-        
+
         if (std::cin.fail())
         {
             std::cerr << "Error: Incorrect data\n";
             return invalid_program_argument_ec;
         }
-        
+
         if (maxeqrunlen < eqrunlen)
         {
             maxeqrunlen = eqrunlen;
