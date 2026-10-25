@@ -7,7 +7,7 @@ int main()
   const int invalid_program_argument_ec = 1;
   const int invalid_sequence_ec = 2;
   const int good_ec = 0;
-  const size_t maxsize = std::numeric_limits< size_t >::max();
+  const size_t maxsize = std::numeric_limits<size_t>::max();
   int left = 0;
   if (!(std::cin >> left))
   {
