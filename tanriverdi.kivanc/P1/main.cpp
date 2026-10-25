@@ -1,7 +1,10 @@
+
 #include <iostream>
 
 namespace tanriverdi
 {
+  const int input_error = 1;
+
   struct Result
   {
     int inc_seq;
@@ -69,7 +72,7 @@ int main()
   if (!tanriverdi::readSequence(std::cin, res))
   {
     std::cerr << "Error: input is not a valid sequence\n";
-    return 1;
+    return tanriverdi::input_error;
   }
 
   std::cout << res.inc_seq << '\n';
