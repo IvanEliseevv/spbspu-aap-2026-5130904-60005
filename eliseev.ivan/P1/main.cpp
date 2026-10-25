@@ -32,8 +32,9 @@ int main()
     return fail_code1;
   }
 
-  if (count < 2 || max2 == smallch) {
+  if (count < 2 or max2 == smallch) {
     std::cerr << "ERROR: small posledovatelnost\n";
+    std::cout << count_max << "\n";
     return fail_code2;
   }
 
