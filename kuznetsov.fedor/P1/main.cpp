@@ -8,7 +8,6 @@ int main()
   int sub_max = 0, sub_dup = 0;
   int k_max = 0, first_num = 0, second_num = std::numeric_limits< int >::min(), actual_num = 0, k_el = 0;
   int max = std::numeric_limits< int >::min();
-  std::cout << "ввести значения: ";
   while (std::cin >> n)
   {
     if (n == 0)
@@ -59,7 +58,7 @@ int main()
   }
   if (!std::cin)
   {
-    std::cout << "Некорректный ввод\n";
+    std::cerr << "Некорректный ввод\n";
     return cin_err;
   }
 
@@ -73,10 +72,10 @@ int main()
       return unreal_par;
     }
     std::cerr << "невозможно вычислить sub_dup\n";
-    std::cout << "SUB_MAX == " << sub_max << "\n";
+    std::cout << sub_max << "\n";
     return unreal_par;
   }
-  std::cout << "SUB_MAX == " << sub_max << "\n";
-  std::cout << "SUB_DUP == " << sub_dup << "\n";
+  std::cout << sub_max << "\n";
+  std::cout << sub_dup << "\n";
   return 0;
 }
