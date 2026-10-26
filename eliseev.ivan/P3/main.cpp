@@ -6,7 +6,7 @@ namespace eliseev
 {
   int** createMatrix(int rows, int cols)
   {
-    int** matrix = new (std::nothrow) int*[rows];
+    int** const matrix = new (std::nothrow) int*[rows];
     if (matrix == nullptr)
     {
       throw 2;
