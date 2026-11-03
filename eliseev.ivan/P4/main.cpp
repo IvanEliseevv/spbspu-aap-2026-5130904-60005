@@ -20,7 +20,7 @@ namespace eliseev {
   {
     size_t j = 0;
     for (size_t i = 0; src[i] != '\0'; ++i) {
-      if (!isdigit(static_cast<unsigned char>(src[i]))) {
+      if (!isdigit(static_cast< unsigned char >(src[i]))) {
         dst[j++] = src[i];
       }
     }
@@ -32,7 +32,7 @@ namespace eliseev {
   {
     size_t j = 0;
     for (size_t i = 0; src[i] != '\0'; ++i) {
-      if (!isalpha(static_cast<unsigned char>(src[i]))) {
+      if (!isalpha(static_cast< unsigned char >(src[i]))) {
         dst[j++] = src[i];
       }
     }
@@ -42,11 +42,11 @@ namespace eliseev {
 
   char* read_line(std::istream& in)
   {
-    const size_t max_size = std::numeric_limits<size_t>::max();
+    const size_t max_size = std::numeric_limits< size_t >::max();
     size_t capacity = 16;
     size_t len = 0;
 
-    char* buf = static_cast<char*>(malloc(capacity));
+    char* buf = static_cast< char* >(malloc(capacity));
     if (buf == nullptr) {
       throw std::bad_alloc();
     }
@@ -59,7 +59,7 @@ namespace eliseev {
           throw std::bad_alloc();
         }
         size_t new_capacity = capacity * 2;
-        char* bigger = static_cast<char*>(malloc(new_capacity));
+        char* bigger = static_cast< char* >(malloc(new_capacity));
         if (bigger == nullptr) {
           free(buf);
           throw std::bad_alloc();
@@ -84,7 +84,7 @@ int main()
     char* input = eliseev::read_line(std::cin);
     const size_t len = eliseev::length(input);
 
-    char* result = static_cast<char*>(malloc(len + 1));
+    char* result = static_cast< char* >(malloc(len + 1));
     if (result == nullptr) {
       free(input);
       throw std::bad_alloc();
@@ -95,8 +95,7 @@ int main()
 
     free(result);
     free(input);
-  }
-  catch (const std::bad_alloc& e) {
+  } catch (const std::bad_alloc& e) {
     std::cerr << "Error: " << e.what() << '\n';
     return 1;
   }
