@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstddef>
 #include <cstdlib>
@@ -7,6 +6,8 @@
 #include <stdexcept>
 
 namespace eliseev {
+
+  const size_t kInitialCapacity = 16;
 
   size_t length(const char* s)
   {
@@ -17,7 +18,7 @@ namespace eliseev {
     return n;
   }
 
-  char* remove_digits(char* dst, const char* src)
+  char* removeDigits(char* dst, const char* src)
   {
     size_t j = 0;
     for (size_t i = 0; src[i] != '\0'; ++i) {
@@ -29,7 +30,7 @@ namespace eliseev {
     return dst;
   }
 
-  char* remove_latin(char* dst, const char* src)
+  char* removeLatin(char* dst, const char* src)
   {
     size_t j = 0;
     for (size_t i = 0; src[i] != '\0'; ++i) {
@@ -41,10 +42,10 @@ namespace eliseev {
     return dst;
   }
 
-  char* read_line(std::istream& in)
+  char* readLine(std::istream& in)
   {
     const size_t max_size = std::numeric_limits< size_t >::max();
-    size_t capacity = 16;
+    size_t capacity = kInitialCapacity;
     size_t len = 0;
 
     char* buf = static_cast< char* >(malloc(capacity));
@@ -59,8 +60,8 @@ namespace eliseev {
           free(buf);
           throw std::bad_alloc();
         }
-        size_t new_capacity = capacity * 2;
-        char* bigger = static_cast< char* >(malloc(new_capacity));
+        const size_t new_capacity = capacity * 2;
+        char* const bigger = static_cast< char* >(malloc(new_capacity));
         if (bigger == nullptr) {
           free(buf);
           throw std::bad_alloc();
@@ -83,7 +84,7 @@ int main()
 {
   using namespace eliseev;
   try {
-    char* input = read_line(std::cin);
+    char* const input = readLine(std::cin);
     const size_t len = length(input);
 
     if (len == 0) {
@@ -92,14 +93,14 @@ int main()
       return 1;
     }
 
-    char* result = static_cast< char* >(malloc(len + 1));
+    char* const result = static_cast< char* >(malloc(len + 1));
     if (result == nullptr) {
       free(input);
       throw std::bad_alloc();
     }
 
-    std::cout << remove_digits(result, input) << "\n";
-    std::cout << remove_latin(result, input) << "\n";
+    std::cout << removeDigits(result, input) << "\n";
+    std::cout << removeLatin(result, input) << "\n";
 
     free(result);
     free(input);
