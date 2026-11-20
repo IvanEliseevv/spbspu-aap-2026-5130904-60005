@@ -16,11 +16,6 @@ namespace eliseev
     return matrix;
   }
 
-  void freeMatrix(int* matrix)
-  {
-    delete[] matrix;
-  }
-
   void readSizes(std::ifstream& in, size_t& rows, size_t& cols)
   {
     if (!(in >> rows >> cols))
@@ -169,16 +164,14 @@ namespace eliseev
     }
     catch (int e)
     {
-      freeMatrix(matrix);
+      delete[] matrix;
       throw e;
     }
 
     const int var9 = countColsNoSame(matrix, rows, cols);
     const int var18 = countNonZeroDiagonals(matrix, rows, cols);
-
     writeResults(out, var9, var18);
-
-    freeMatrix(matrix);
+    delete[] matrix;
   }
 }
 
