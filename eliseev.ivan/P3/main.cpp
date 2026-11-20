@@ -1,81 +1,62 @@
 #include <iostream>
 #include <fstream>
 #include <new>
+#include <cstddef>
 
 namespace eliseev
 {
-  int** createMatrix(int rows, int cols)
+  int* createMatrix(size_t rows, size_t cols)
   {
-    int** const matrix = new (std::nothrow) int*[rows];
+    const size_t total = rows * cols;
+    int* const matrix = new (std::nothrow) int[total];
     if (matrix == nullptr)
     {
       throw 2;
     }
-
-    for (int i = 0; i < rows; ++i)
-    {
-      matrix[i] = new (std::nothrow) int[cols];
-      if (matrix[i] == nullptr)
-      {
-        for (int j = 0; j < i; ++j)
-        {
-          delete[] matrix[j];
-        }
-        delete[] matrix;
-        throw 2;
-      }
-    }
     return matrix;
   }
 
-  void freeMatrix(int** matrix, int rows)
+  void freeMatrix(int* matrix)
   {
-    if (matrix == nullptr)
-    {
-      return;
-    }
-    for (int i = 0; i < rows; ++i)
-    {
-      delete[] matrix[i];
-    }
     delete[] matrix;
   }
 
-  void readSizes(std::ifstream& in, int& rows, int& cols)
+  void readSizes(std::ifstream& in, size_t& rows, size_t& cols)
   {
     if (!(in >> rows >> cols))
     {
       throw 3;
     }
-    if (rows < 0 || cols < 0)
-    {
-      throw 3;
-    }
   }
 
-  void readMatrix(std::ifstream& in, int** matrix, int rows, int cols)
+  void readMatrix(std::ifstream& in, int* matrix, size_t rows, size_t cols)
   {
-    for (int i = 0; i < rows; ++i)
+    for (size_t i = 0; i < rows; ++i)
     {
-      for (int j = 0; j < cols; ++j)
+      for (size_t j = 0; j < cols; ++j)
       {
-        if (!(in >> matrix[i][j]))
+        if (!(in >> matrix[i * cols + j]))
         {
           throw 3;
         }
       }
     }
+    int extra = 0;
+    if (in >> extra)
+    {
+      throw 4;
+    }
   }
 
-  int countColsNoSame(int* const* matrix, int rows, int cols)
+  int countColsNoSame(const int* matrix, size_t rows, size_t cols)
   {
     int count = 0;
-    for (int j = 0; j < cols; ++j)
+    for (size_t j = 0; j < cols; ++j)
     {
       bool has_same = false;
-      for (int i = 1; i < rows; ++i)
+      for (size_t i = 1; i < rows; ++i)
       {
-        if (matrix[i][j] == matrix[i - 1][j])
+        if (matrix[i * cols + j] == matrix[(i - 1) * cols + j])
         {
           has_same = true;
           break;
@@ -89,20 +70,24 @@ namespace eliseev
     return count;
   }
 
-  int countNonZeroDiagonals(int* const* matrix, int rows, int cols)
+  int countNonZeroDiagonals(const int* matrix, size_t rows, size_t cols)
   {
     int count = 0;
-    for (int d = -(cols - 1); d <= (rows - 1); ++d)
+    const long long rows_ll = rows;
+    const long long cols_ll = cols;
+
+    for (long long d = -(cols_ll - 1); d <= (rows_ll - 1); ++d)
     {
       bool has_zero = false;
-      for (int i = 0; i < rows; ++i)
+      for (size_t i = 0; i < rows; ++i)
       {
-        const int j = i - d;
-        if (j < 0 || j >= cols)
+        const long long i_ll = i;
+        const long long j = i_ll - d;
+        if (j < 0 || j >= cols_ll)
         {
           continue;
         }
-        if (matrix[i][j] == 0)
+        if (matrix[i * cols + j] == 0)
         {
           has_zero = true;
           break;
@@ -122,7 +107,7 @@ namespace eliseev
     out << r18 << '\n';
   }
 
-  int parseNum(const char* s)
+  int parseNum(const char* const s)
   {
     if (!s || !*s)
     {
@@ -141,12 +126,11 @@ namespace eliseev
 
   void runFixed(std::ifstream& in, std::ofstream& out)
   {
-    const int MAX = 10000;
+    const size_t MAX = 10000;
 
     int flat[MAX];
-    int* matrix[MAX];
 
-    int rows = 0, cols = 0;
+    size_t rows = 0, cols = 0;
     readSizes(in, rows, cols);
 
     if (rows == 0 || cols == 0)
@@ -159,22 +143,17 @@ namespace eliseev
       throw 3;
     }
 
-    for (int i = 0; i < rows; ++i)
-    {
-      matrix[i] = flat + i * cols;
-    }
+    readMatrix(in, flat, rows, cols);
 
-    readMatrix(in, matrix, rows, cols);
-
-    const int var9 = countColsNoSame(matrix, rows, cols);
-    const int var18 = countNonZeroDiagonals(matrix, rows, cols);
+    const int var9 = countColsNoSame(flat, rows, cols);
+    const int var18 = countNonZeroDiagonals(flat, rows, cols);
 
     writeResults(out, var9, var18);
   }
 
   void runDynamic(std::ifstream& in, std::ofstream& out)
   {
-    int rows = 0, cols = 0;
+    size_t rows = 0, cols = 0;
     readSizes(in, rows, cols);
 
     if (rows == 0 || cols == 0)
@@ -182,7 +161,7 @@ namespace eliseev
       return;
     }
 
-    int** const matrix = createMatrix(rows, cols);
+    int* const matrix = createMatrix(rows, cols);
 
     try
     {
@@ -190,7 +169,7 @@ namespace eliseev
     }
     catch (int e)
     {
-      freeMatrix(matrix, rows);
+      freeMatrix(matrix);
       throw e;
     }
 
@@ -199,7 +178,7 @@ namespace eliseev
 
     writeResults(out, var9, var18);
 
-    freeMatrix(matrix, rows);
+    freeMatrix(matrix);
   }
 }
 
