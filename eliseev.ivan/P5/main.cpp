@@ -8,8 +8,8 @@ namespace eliseev
     const rectangle_t frame = shape->getFrameRect();
     std::cout << name << ":\n"
               << "  Area: " << shape->getArea() << "\n"
-              << "  FrameRect: pos(" << frame.pos.x << ", " << frame.pos.y 
-              << "), w=" << frame.width << ", h=" << frame.height << "\n";
+              << "  FrameRect: pos(" << frame.pos.x << ", " << frame.pos.y << "), w=" << frame.width
+              << ", h=" << frame.height << "\n";
   }
 
   void printAllShapes(const Shape* const* shapes, size_t count)
@@ -21,16 +21,28 @@ namespace eliseev
     {
       totalArea += shapes[i]->getArea();
       const rectangle_t frame = shapes[i]->getFrameRect();
-      
+
       const double left = frame.pos.x - frame.width / 2.0;
       const double right = frame.pos.x + frame.width / 2.0;
       const double bottom = frame.pos.y - frame.height / 2.0;
       const double top = frame.pos.y + frame.height / 2.0;
 
-      if (left < minX) minX = left;
-      if (right > maxX) maxX = right;
-      if (bottom < minY) minY = bottom;
-      if (top > maxY) maxY = top;
+      if (left < minX)
+      {
+        minX = left;
+      }
+      if (right > maxX)
+      {
+        maxX = right;
+      }
+      if (bottom < minY)
+      {
+        minY = bottom;
+      }
+      if (top > maxY)
+      {
+        maxY = top;
+      }
     }
 
     std::cout << "\n--- Summary ---\n"
@@ -50,7 +62,7 @@ int main()
     Ellipse ellipse(4.0, 2.0, {5.0, 5.0});
     Regular hexagon(6, 3.0, {-5.0, -5.0});
 
-    Shape* shapes[] = { &rect, &ellipse, &hexagon };
+    Shape* shapes[] = {&rect, &ellipse, &hexagon};
     const size_t count = sizeof(shapes) / sizeof(shapes[0]);
 
     std::cout << "Before scaling:\n";
