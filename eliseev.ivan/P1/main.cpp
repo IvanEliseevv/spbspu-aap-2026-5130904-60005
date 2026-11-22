@@ -24,21 +24,23 @@ namespace eliseev
     virtual void next(int i) = 0;
   };
 
-  class SubMax : public ISeqProperty
+  class SubMax: public ISeqProperty
   {
   public:
-    SubMax() : max1_(std::numeric_limits<long long>::min()),
-               max2_(std::numeric_limits<long long>::min()),
-               count_(0) {}
+    SubMax():
+      max1_(std::numeric_limits< long long >::min()),
+      max2_(std::numeric_limits< long long >::min()),
+      count_(0)
+    {}
 
   private:
     size_t result() const override
     {
-      if (count_ < 2 || max2_ == std::numeric_limits<long long>::min())
+      if (count_ < 2 || max2_ == std::numeric_limits< long long >::min())
       {
         throw std::runtime_error("ERROR: small posledovatelnost");
       }
-      return static_cast<size_t>(max2_);
+      return static_cast< size_t >(max2_);
     }
 
     void next(int a) override
@@ -60,12 +62,14 @@ namespace eliseev
     size_t count_;
   };
 
-  class CntMax : public ISeqProperty
+  class CntMax: public ISeqProperty
   {
   public:
-    CntMax() : max_(std::numeric_limits<long long>::min()),
-               count_(0),
-               max_count_(0) {}
+    CntMax():
+      max_(std::numeric_limits< long long >::min()),
+      count_(0),
+      max_count_(0)
+    {}
 
   private:
     size_t result() const override
@@ -130,7 +134,7 @@ int main()
     }
 
     int exit_code = 0;
-    
+
     try
     {
       std::cout << (*props[0])() << "\n";
