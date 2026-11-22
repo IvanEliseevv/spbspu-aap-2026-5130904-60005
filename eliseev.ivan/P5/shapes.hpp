@@ -7,6 +7,10 @@
 
 namespace eliseev
 {
+  const double TWO = 2.0;
+  const double HALF = 0.5;
+  const double ZERO = 0.0;
+
   class Rectangle: public Shape
   {
   public:
@@ -15,7 +19,7 @@ namespace eliseev
       height_(height),
       pos_(pos)
     {
-      if (width_ <= 0.0 || height_ <= 0.0)
+      if (width_ <= ZERO || height_ <= ZERO)
       {
         throw std::invalid_argument("Invalid dimensions");
       }
@@ -38,9 +42,10 @@ namespace eliseev
     {
       pos_ = pos;
     }
+
     void scale(double k) override
     {
-      if (k <= 0.0)
+      if (k <= ZERO)
       {
         throw std::invalid_argument("Invalid scale");
       }
@@ -49,7 +54,8 @@ namespace eliseev
     }
 
   private:
-    double width_, height_;
+    double width_;
+    double height_;
     point_t pos_;
   };
 
@@ -61,7 +67,7 @@ namespace eliseev
       ry_(ry),
       pos_(pos)
     {
-      if (rx_ <= 0.0 || ry_ <= 0.0)
+      if (rx_ <= ZERO || ry_ <= ZERO)
       {
         throw std::invalid_argument("Invalid radii");
       }
@@ -73,7 +79,7 @@ namespace eliseev
     }
     rectangle_t getFrameRect() const override
     {
-      return {2.0 * rx_, 2.0 * ry_, pos_};
+      return {TWO * rx_, TWO * ry_, pos_};
     }
     void move(double dx, double dy) override
     {
@@ -84,9 +90,10 @@ namespace eliseev
     {
       pos_ = pos;
     }
+
     void scale(double k) override
     {
-      if (k <= 0.0)
+      if (k <= ZERO)
       {
         throw std::invalid_argument("Invalid scale");
       }
@@ -95,7 +102,8 @@ namespace eliseev
     }
 
   private:
-    double rx_, ry_;
+    double rx_;
+    double ry_;
     point_t pos_;
   };
 
@@ -107,7 +115,7 @@ namespace eliseev
       radius_(radius),
       pos_(pos)
     {
-      if (angles_ < 3 || radius_ <= 0.0)
+      if (angles_ < 3 || radius_ <= ZERO)
       {
         throw std::invalid_argument("Invalid polygon");
       }
@@ -115,11 +123,11 @@ namespace eliseev
 
     double getArea() const override
     {
-      return 0.5 * angles_ * radius_ * radius_ * std::sin(2.0 * M_PI / angles_);
+      return HALF * angles_ * radius_ * radius_ * std::sin(TWO * M_PI / angles_);
     }
     rectangle_t getFrameRect() const override
     {
-      return {2.0 * radius_, 2.0 * radius_, pos_};
+      return {TWO * radius_, TWO * radius_, pos_};
     }
     void move(double dx, double dy) override
     {
@@ -130,9 +138,10 @@ namespace eliseev
     {
       pos_ = pos;
     }
+
     void scale(double k) override
     {
-      if (k <= 0.0)
+      if (k <= ZERO)
       {
         throw std::invalid_argument("Invalid scale");
       }
