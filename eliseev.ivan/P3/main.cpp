@@ -5,13 +5,19 @@
 
 namespace eliseev
 {
+  const int ERROR_INVALID_ARGS = 1;
+  const int ERROR_ALLOCATION = 2;
+  const int ERROR_FILE = 3;
+  const int ERROR_EXTRA_DATA = 4;
+  const int ERROR_ZERO_SIZE = 5;
+
   int* createMatrix(size_t rows, size_t cols)
   {
     const size_t total = rows * cols;
     int* const matrix = new (std::nothrow) int[total];
     if (matrix == nullptr)
     {
-      throw 2;
+      throw ERROR_ALLOCATION;
     }
     return matrix;
   }
@@ -20,7 +26,11 @@ namespace eliseev
   {
     if (!(in >> rows >> cols))
     {
-      throw 3;
+      throw ERROR_FILE;
+    }
+    if (rows == 0 || cols == 0)
+    {
+      throw ERROR_ZERO_SIZE;
     }
   }
 
@@ -32,20 +42,21 @@ namespace eliseev
       {
         if (!(in >> matrix[i * cols + j]))
         {
-          throw 3;
+          throw ERROR_FILE;
         }
       }
     }
-    int extra = 0;
-    if (in >> extra)
+
+    char c = '\0';
+    if (in >> c)
     {
-      throw 4;
+      throw ERROR_EXTRA_DATA;
     }
   }
 
-  int countColsNoSame(const int* matrix, size_t rows, size_t cols)
+  size_t countColsNoSame(const int* matrix, size_t rows, size_t cols)
   {
-    int count = 0;
+    size_t count = 0;
     for (size_t j = 0; j < cols; ++j)
     {
       bool has_same = false;
@@ -65,9 +76,9 @@ namespace eliseev
     return count;
   }
 
-  int countNonZeroDiagonals(const int* matrix, size_t rows, size_t cols)
+  size_t countNonZeroDiagonals(const int* matrix, size_t rows, size_t cols)
   {
-    int count = 0;
+    size_t count = 0;
     const long long rows_ll = rows;
     const long long cols_ll = cols;
 
@@ -78,10 +89,12 @@ namespace eliseev
       {
         const long long i_ll = i;
         const long long j = i_ll - d;
+
         if (j < 0 || j >= cols_ll)
         {
           continue;
         }
+
         if (matrix[i * cols + j] == 0)
         {
           has_zero = true;
@@ -96,65 +109,32 @@ namespace eliseev
     return count;
   }
 
-  void writeResults(std::ofstream& out, int r9, int r18)
-  {
-    out << r9 << '\n';
-    out << r18 << '\n';
-  }
-
-  int parseNum(const char* const s)
-  {
-    if (!s || !*s)
-    {
-      throw 1;
-    }
-    if (s[0] != '1' && s[0] != '2')
-    {
-      throw 1;
-    }
-    if (s[1] != '\0')
-    {
-      throw 1;
-    }
-    return s[0] - '0';
-  }
-
   void runFixed(std::ifstream& in, std::ofstream& out)
   {
     const size_t MAX = 10000;
-
     int flat[MAX];
 
     size_t rows = 0, cols = 0;
     readSizes(in, rows, cols);
 
-    if (rows == 0 || cols == 0)
-    {
-      return;
-    }
-
     if (rows > MAX / cols)
     {
-      throw 3;
+      throw ERROR_FILE;
     }
 
     readMatrix(in, flat, rows, cols);
 
-    const int var9 = countColsNoSame(flat, rows, cols);
-    const int var18 = countNonZeroDiagonals(flat, rows, cols);
+    const size_t var9 = countColsNoSame(flat, rows, cols);
+    const size_t var18 = countNonZeroDiagonals(flat, rows, cols);
 
-    writeResults(out, var9, var18);
+    out << var9 << '\n';
+    out << var18 << '\n';
   }
 
   void runDynamic(std::ifstream& in, std::ofstream& out)
   {
     size_t rows = 0, cols = 0;
     readSizes(in, rows, cols);
-
-    if (rows == 0 || cols == 0)
-    {
-      return;
-    }
 
     int* const matrix = createMatrix(rows, cols);
 
@@ -168,10 +148,30 @@ namespace eliseev
       throw e;
     }
 
-    const int var9 = countColsNoSame(matrix, rows, cols);
-    const int var18 = countNonZeroDiagonals(matrix, rows, cols);
-    writeResults(out, var9, var18);
+    const size_t var9 = countColsNoSame(matrix, rows, cols);
+    const size_t var18 = countNonZeroDiagonals(matrix, rows, cols);
+
+    out << var9 << '\n';
+    out << var18 << '\n';
+
     delete[] matrix;
+  }
+
+  int parseNum(const char* const s)
+  {
+    if (!s || !*s)
+    {
+      throw ERROR_INVALID_ARGS;
+    }
+    if (s[0] != '1' && s[0] != '2')
+    {
+      throw ERROR_INVALID_ARGS;
+    }
+    if (s[1] != '\0')
+    {
+      throw ERROR_INVALID_ARGS;
+    }
+    return s[0] - '0';
   }
 }
 
@@ -183,7 +183,7 @@ int main(int argc, char* argv[])
   {
     if (argc != 4)
     {
-      throw 1;
+      throw ERROR_INVALID_ARGS;
     }
 
     const int num = parseNum(argv[1]);
@@ -191,13 +191,14 @@ int main(int argc, char* argv[])
     std::ifstream in(argv[2]);
     if (!in.is_open())
     {
-      throw 3;
+      throw ERROR_FILE;
     }
     std::ofstream out(argv[3]);
     if (!out.is_open())
     {
-      throw 3;
+      throw ERROR_FILE;
     }
+
     if (num == 1)
     {
       runFixed(in, out);
