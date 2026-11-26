@@ -4,14 +4,17 @@
 
 namespace eliseev
 {
+  const int ERROR_INVALID_INPUT = 1;
+  const int ERROR_SMALL_SEQUENCE = 2;
+
   class ISeqProperty
   {
   public:
     virtual ~ISeqProperty() = default;
 
-    size_t operator()() const
+    void operator()(std::ostream& os) const
     {
-      return result();
+      result(os);
     }
 
     void operator()(int i)
@@ -20,7 +23,7 @@ namespace eliseev
     }
 
   private:
-    virtual size_t result() const = 0;
+    virtual void result(std::ostream& os) const = 0;
     virtual void next(int i) = 0;
   };
 
@@ -34,13 +37,13 @@ namespace eliseev
     {}
 
   private:
-    size_t result() const override
+    void result(std::ostream& os) const override
     {
       if (count_ < 2 || max2_ == std::numeric_limits< long long >::min())
       {
         throw std::runtime_error("ERROR: small posledovatelnost");
       }
-      return static_cast< size_t >(max2_);
+      os << max2_ << "\n";
     }
 
     void next(int a) override
@@ -51,7 +54,7 @@ namespace eliseev
         max2_ = max1_;
         max1_ = a;
       }
-      else if (a < max1_ && a > max2_)
+      else if (a > max2_)
       {
         max2_ = a;
       }
@@ -72,13 +75,13 @@ namespace eliseev
     {}
 
   private:
-    size_t result() const override
+    void result(std::ostream& os) const override
     {
       if (count_ == 0)
       {
         throw std::runtime_error("ERROR: empty sequence");
       }
-      return max_count_;
+      os << max_count_ << "\n";
     }
 
     void next(int a) override
@@ -107,17 +110,20 @@ int main()
 
   try
   {
-    ISeqProperty* props[2];
-    props[0] = new SubMax();
-    props[1] = new CntMax();
+    SubMax sub_max;
+    CntMax cnt_max;
+    const size_t props_size = 2;
+    ISeqProperty* props[props_size] = {&sub_max, &cnt_max};
 
     int value = 0;
     bool input_error = false;
 
     while (std::cin >> value && value != 0)
     {
-      (*props[0])(value);
-      (*props[1])(value);
+      for (size_t i = 0; i < props_size; ++i)
+      {
+        (*props[i])(value);
+      }
     }
 
     if (!std::cin)
@@ -128,41 +134,36 @@ int main()
     if (input_error)
     {
       std::cerr << "ERROR: invalid input\n";
-      delete props[0];
-      delete props[1];
-      return 1;
+      return ERROR_INVALID_INPUT;
     }
 
     int exit_code = 0;
 
     try
     {
-      std::cout << (*props[0])() << "\n";
+      (*props[0])(std::cout);
     }
     catch (const std::exception& e)
     {
       std::cerr << e.what() << "\n";
-      exit_code = 2;
+      exit_code = ERROR_SMALL_SEQUENCE;
     }
 
     try
     {
-      std::cout << (*props[1])() << "\n";
+      (*props[1])(std::cout);
     }
     catch (const std::exception& e)
     {
       std::cerr << e.what() << "\n";
-      exit_code = 2;
+      exit_code = ERROR_SMALL_SEQUENCE;
     }
-
-    delete props[0];
-    delete props[1];
 
     return exit_code;
   }
   catch (const std::exception& e)
   {
     std::cerr << "Error: " << e.what() << "\n";
-    return 1;
+    return ERROR_INVALID_INPUT;
   }
 }

@@ -2,10 +2,12 @@
 #include <cstddef>
 #include <cstdlib>
 #include <limits>
-#include <cctype>
 #include <stdexcept>
 
 namespace eliseev {
+
+  const int ERROR_EMPTY_INPUT = 1;
+  const int ERROR_ALLOCATION = 1;
 
   const size_t kInitialCapacity = 16;
 
@@ -22,8 +24,9 @@ namespace eliseev {
   {
     size_t j = 0;
     for (size_t i = 0; src[i] != '\0'; ++i) {
-      if (!isdigit(static_cast< unsigned char >(src[i]))) {
-        dst[j++] = src[i];
+      const char c = src[i];
+      if (c < '0' || c > '9') {
+        dst[j++] = c;
       }
     }
     dst[j] = '\0';
@@ -34,8 +37,11 @@ namespace eliseev {
   {
     size_t j = 0;
     for (size_t i = 0; src[i] != '\0'; ++i) {
-      if (!isalpha(static_cast< unsigned char >(src[i]))) {
-        dst[j++] = src[i];
+      const char c = src[i];
+      const bool is_lower = (c >= 'a' && c <= 'z');
+      const bool is_upper = (c >= 'A' && c <= 'Z');
+      if (!is_lower && !is_upper) {
+        dst[j++] = c;
       }
     }
     dst[j] = '\0';
@@ -90,7 +96,7 @@ int main()
     if (len == 0) {
       std::cerr << "Error: empty input\n";
       free(input);
-      return 1;
+      return ERROR_EMPTY_INPUT;
     }
 
     char* const result = static_cast< char* >(malloc(len + 1));
@@ -106,7 +112,7 @@ int main()
     free(input);
   } catch (const std::bad_alloc& e) {
     std::cerr << "Error: " << e.what() << '\n';
-    return 1;
+    return ERROR_ALLOCATION;
   }
 
   return 0;
