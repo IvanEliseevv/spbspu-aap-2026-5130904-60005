@@ -1,15 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <new>
-#include <cstddef>
-
 namespace eliseev
 {
   const int ERROR_INVALID_ARGS = 1;
   const int ERROR_ALLOCATION = 2;
   const int ERROR_FILE = 3;
   const int ERROR_EXTRA_DATA = 4;
-  const int ERROR_ZERO_SIZE = 5;
 
   int* createMatrix(size_t rows, size_t cols)
   {
@@ -27,10 +24,6 @@ namespace eliseev
     if (!(in >> rows >> cols))
     {
       throw ERROR_FILE;
-    }
-    if (rows == 0 || cols == 0)
-    {
-      throw ERROR_ZERO_SIZE;
     }
   }
 
@@ -117,6 +110,11 @@ namespace eliseev
     size_t rows = 0, cols = 0;
     readSizes(in, rows, cols);
 
+    if (rows == 0 || cols == 0)
+    {
+      return;
+    }
+
     if (rows > MAX / cols)
     {
       throw ERROR_FILE;
@@ -135,6 +133,11 @@ namespace eliseev
   {
     size_t rows = 0, cols = 0;
     readSizes(in, rows, cols);
+
+    if (rows == 0 || cols == 0)
+    {
+      return;
+    }
 
     int* const matrix = createMatrix(rows, cols);
 
